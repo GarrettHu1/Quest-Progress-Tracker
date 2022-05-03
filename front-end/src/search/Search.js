@@ -28,68 +28,35 @@ export default function Search() {
           ...formData,
           [target.name]: target.value,
         });
-      };  
-
-      // Phone number input format validation, follows ###-###-####
-      // function phonenumber(inputtxt) {
-      //   const format = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-      //   if(inputtxt.match(format)) {
-      //     return true;
-      //   } else {
-      //       return false;
-      //     }
-      // };      
-
-      function findResFromNumber(reservations, searchNum) {
-        // const phoneNumb = new Array(data);
-        const data = reservations.filter(x => x.mobile_number.replace(/[^A-Z0-9]/ig, "").includes(searchNum));
-        console.log("reservations includes number from search", data)
-        return data
-      };  
+      };     
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const ac = new AbortController();
-        console.log("number:", formData);
 
         // takes in phone number, validates input,
         setShowRes(false);
 
         // removes spaces, characters, letters
         const formattedNum = formData.mobile_number.replace(/[^A-Z0-9]/ig, "");
-        console.log("Formatted number:", Number(formattedNum))
-
-        // prints true / false if formatted mobile number is a valid number or not
-        // console.log("Format function:", phonenumber(formattedNum));
 
         if (formattedNum) {
-            console.log("Mobile Number Is Valid");
-            // const reservationsFromSearch = await findResFromNumber(reservations, formattedNum);
+          try {
             const reservationsFromSearch = await listResWithoutDate(formattedNum, ac.signal);
-
-            console.log("reservationsFromSearch---------", reservationsFromSearch);
             if (reservationsFromSearch) {
               setFoundRes(reservationsFromSearch);
             } else {
               setFoundRes(null);
             }
+          } catch (err) {
+            throw err
+          }     
         } else {
             setShowRes(true);
             window.alert('Number Is Invalid');
         };
-
-
-        // if valid, make api call
+        return ac.abort();
     };
-
-
-    /*
-    <div><h2>Search Reservations</h2></div>
-    <div class="input-group">
-    <input type="search" class="form-control rounded" placeholder="Mobile Number" aria-label="Search" aria-describedby="search-addon" />
-    <button type="button" class="btn btn-outline-primary">search</button>
-    </div>
-    */
 
 return (
     <div>
@@ -98,9 +65,8 @@ return (
             Mobile Number:
             <input type="text" name="mobile_number" onChange={handleChange} placeholder={"Enter the customer's mobile number"} />
         </label>
-        <button type="submit" className="btn btn-primary">Find</button>
+            <button type="submit" className="btn btn-primary">Find</button>
         </form>
-        
     <table>
         <thead>
           <tr>
@@ -125,8 +91,8 @@ return (
             <td>{reservation.people}</td>
             <td>{reservation.status}</td>   
             </tr>
-          )) 
-          : foundRes.length > 0 ?
+          )) : 
+          foundRes.length > 0 ?
           foundRes.map((reservation) => (
             <tr key={reservation.reservation_id}>
             <td>{reservation.reservation_id}</td>
@@ -137,8 +103,8 @@ return (
             <td>{reservation.people}</td>
             <td>{reservation.status}</td>       
             </tr>
-          ))
-        : "No reservations found"}
+          )) :
+          "No reservations found"}
         </tbody>
       </table>
 

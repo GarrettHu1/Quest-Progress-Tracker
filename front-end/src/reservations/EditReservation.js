@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { listReservations, editReservation, readReservation } from "../utils/api";
-import { today, formatAsDate } from "../utils/date-time";
+import { editReservation, readReservation } from "../utils/api";
+import { formatAsDate } from "../utils/date-time";
 import ResForm from "./ResForm";
 
 export default function EditRes() {
@@ -9,20 +9,8 @@ export default function EditRes() {
 const [ errors, setErrors ] = useState([]);
 const history = useHistory();
 const resId  = useParams().reservation_id;
-
 const [ reservation, setReservation ] = useState([]);
 const [ reservationsError, setReservationsError ] = useState(null);
-
-// const initialFormState = {
-//     first_name: reservation.first_name,
-//     last_name: reservation.last_name,
-//     mobile_number: reservation.mobile_number,
-//     reservation_date: reservation.reservation_date,
-//     reservation_time: reservation.reservation_time,
-//     people: reservation.people,
-//     status: reservation.status
-// };
-// console.log("initialFormState:", initialFormState)
 
 const [ formData, setFormData ] = useState(null);
 
@@ -32,12 +20,6 @@ const [ formData, setFormData ] = useState(null);
   function loadDashboard() {
     const ac = new AbortController();
     setReservationsError(null);
-    // listReservations(today(), abortController.signal)
-    //   .then((reservations)=> {
-    //       const foundRes = reservations.find((reservation) => reservation.reservation_id === Number(resId.reservation_id))
-    //       setReservation(foundRes)
-    //       setFormData(foundRes)
-    //   })
     readReservation(resId, ac.signal)
     .then((reservation) => {
       const newRes = {...reservation, reservation_date: formatAsDate(reservation.reservation_date)}
@@ -51,13 +33,6 @@ const [ formData, setFormData ] = useState(null);
   };
 
   if (reservationsError) console.log(reservationsError);
-//   console.log("Found reservation:", reservation)
-
-
-
-console.log("initial form data---------------", formData);
-console.log("reservation data`````", reservation);
-
 
 const handleChange = ({ target }) => {
     if (target.type === "date") {
@@ -79,10 +54,8 @@ const handleChange = ({ target }) => {
 
 const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("formData on submit ----", formData)
-
+    const ac = new AbortController();
     setErrors([]);
-
     const handleSubErrors = [];
 
     let a = formData.first_name;
@@ -97,6 +70,7 @@ const handleSubmit = async (event) => {
         window.alert('Please fill in all values')
     } else {
         console.log("Form data passes validations````````", formData)
+
     // res date values
     const resDate = new Date(d);
     console.log(d);
@@ -127,9 +101,7 @@ const handleSubmit = async (event) => {
     const tuesError = "Reservation Date is on a Tuesday";
     const openingHoursError = "Reservation time must be during opening hours";
     
-    // if reservation date is on a tuesday, push tuesError
     if (dateValue === 1) {
-        // if errortype doe not already exist in errors
         if (!errors.includes(tuesError)) {
             handleSubErrors.push(tuesError)
             console.log(errors)
@@ -137,15 +109,12 @@ const handleSubmit = async (event) => {
         console.log(errors);
     }
     
-    // if res date/time is in the past, push dateTimeError
-    // console.log(resHour, resMin)
     if (
         resYear < year 
         || (resMonth === mes && resDay < dia) 
         || resMonth < mes 
         || (resDay === dia && resMonth === mes && resYear === year && hours > resHour )
         ) {
-        // setErrors( ...errors, dateError)
         handleSubErrors.push(dateTimeError);
         console.log(errors);
         }
@@ -162,21 +131,18 @@ const handleSubmit = async (event) => {
 
         setErrors(handleSubErrors)
         if (handleSubErrors.length === 0){
-        const ac = new AbortController();
+        
         await editReservation(formData, ac.signal);
-        // returns user to dashboard
         history.push(`/dashboard?date=${formData.reservation_date}`);
     }
     }
+    return ac.abort();
 };
 
   const handleCancel = (event) => {
     event.preventDefault();
-    // setFormData(initialFormState);
     history.go(-1);
   };
-
-  // console.log(reservation)
 
     return (
       <div>

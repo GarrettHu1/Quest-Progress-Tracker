@@ -16,26 +16,15 @@ function Dashboard({ date }) {
   const [ reservationsError, setReservationsError ] = useState(null);
   const [ tables, setTables ] = useState([]);
   const [ tablesError, setTablesError ] = useState(null);
-  // const [ currentDay, setCurrentDay ] = useState(today());
-
   const location = useLocation();
   const history = useHistory();
 
-  // console.log("today", currentDay)
-
   // load all reservations on initial page load, then whenever currentDay is updated
-  // useEffect(loadDashboard, [currentDay]);
   useEffect(loadDashboard, [date]);
 
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    // if (location.search) {
-    //   const dateFromQuery = formatAsDate(location.search)
-    //   console.log("dateFromQuery:", dateFromQuery)
-    //   // console.log("currentDay:", currentDay)
-    // }
-    // listReservations(currentDay, abortController.signal)
     listReservations({date}, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
@@ -43,59 +32,21 @@ function Dashboard({ date }) {
     return () => abortController.abort();
   };
 
-  // useEffect(()=> {
-  //   const abortController = new AbortController();
-  //   setReservationsError(null);
-  //   listReservations(currentDay, abortController.signal)
-  //   .then(setReservations)
-  //   .catch(setReservationsError)
-  // }, [currentDay])
-
   if (reservationsError) console.log(reservationsError);
 
-    // load all reservations on initial page load, then whenever currentDay is updated
-    // useEffect(loadDash, []);
-
-    // function loadDash() {
-    //   const abortController = new AbortController();
-    //   setTablesError(null);
-    //   listTables(abortController.signal)
-    //     .then(setTables)
-    //     .catch(setTablesError);
-    //   return () => abortController.abort();
-    // };
   if (tablesError) console.log(tablesError);
 
   const goBack = (event) => {
-    // event.preventDefault();
-    // get current date, subtract 24hrs to get day before
-    // load reservations from that day
-    // setCurrentDay(previous(date));
     history.push(`/dashboard?date=${previous(date)}`);
   };
 
   const goToday = (event) => {
-    // event.preventDefault();
-    // setCurrentDay(today())
     history.push(`/dashboard?date=${today()}`);
   };
 
   const goNext = (event) => {
-    // event.preventDefault();
-    // get current date, add 24hrs to get day after
-    // load dashboard containing reservations from query for that day
-    // setCurrentDay(next(date));
     history.push(`/dashboard?date=${next(date)}`);
   };
-
-  // async function handleCancel(resId) {
-  //   if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
-  //     const ac = new AbortController();
-  //     const reqData = { reservation_id: resId, status: "cancelled" };
-  //     updateReservationStatus(reqData, ac.signal);
-  //     window.location.reload();
-  //   }; 
-  // };
 
   function cancel(reservation_id) {
     console.log("Cancelling")
@@ -113,26 +64,8 @@ function Dashboard({ date }) {
     }
   }
 
-  // async function handleFinish(tableId, resId) {
-  //   // make a del req to tables, remove reservation_id
-  //   if (window.confirm("Is this table ready to seat new guests?")) {
-  //     const ac = new AbortController();
-  //     deleteRes(tableId, ac.signal);
-  //     console.log("handleFinish:", resId)
-  //     window.location.reload();
-  //   };
-  // };
-
   // filters reservations to only return those with "booked" or "seated" status
   const filteredReservations = reservations.filter((reservation) => reservation.status === "booked" || reservation.status === "seated")
-
-  // Old button
-  // <button className="btn btn-secondary" 
-  // onClick={()=> {
-  //   history.push(`/reservations/${reservation.reservation_id}/seat`);
-  // }}>
-  // Seat
-  // </button>
 
   return (
     <main>
@@ -159,9 +92,7 @@ function Dashboard({ date }) {
 
         </div>
       </div>
-
-      <ErrorAlert error={reservationsError} />
-      
+      <ErrorAlert error={reservationsError} />     
       <table>
         <thead>
           <tr>
@@ -195,8 +126,6 @@ function Dashboard({ date }) {
             </a>
             </td>
             <td>
-              {/* <button className="btn btn-secondary" reservation-id-cancel={reservation.reservation_id} 
-            onClick={() => handleCancel(reservation.reservation_id) }>Cancel</button> */}
             <button className="btn btn-secondary" data-reservation-id-cancel={reservation.reservation_id} 
             onClick={() => cancel(reservation.reservation_id)}>
               Cancel
@@ -224,7 +153,6 @@ function Dashboard({ date }) {
             <td>{table.capacity}</td>
             <td data-table-id-status={table.table_id}>{`${table.reservation_id ? "occupied" : "free"}`}</td>        
             <td>{ table.reservation_id && 
-            // <button className="btn btn-secondary" onClick={() => handleFinish(table.table_id, table.reservation_id) }>Finish</button> }
             <button data-table-id-finish={table.table_id}
               className="btn btn-secondary" 
               onClick={() => onFinish(table.table_id, table.reservation_id)}>

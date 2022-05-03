@@ -33,6 +33,7 @@ const handleChange = ({ target }) => {
   };  
 
 const handleSubmit = async (event) => {
+    const ac = new AbortController();
     event.preventDefault();
 
     setErrors([]);
@@ -86,18 +87,14 @@ const handleSubmit = async (event) => {
             handleSubErrors.push(tuesError)
             console.log(errors)
         }
-        console.log(errors);
     }
-    
-    // if res date/time is in the past, push dateTimeError
-    console.log(resHour, resMin)
+
     if (
         resYear < year 
         || (resMonth === mes && resDay < dia) 
         || (resYear === year && resMonth < mes) 
         || (resDay === dia && resMonth === mes && resYear === year && hours > resHour )
         ) {
-        // setErrors( ...errors, dateError)
         handleSubErrors.push(dateTimeError);
         console.log(errors);
         }
@@ -115,16 +112,13 @@ const handleSubmit = async (event) => {
         setErrors(handleSubErrors);
 
         if (handleSubErrors.length === 0){
-        const ac = new AbortController();
+        
         await createReservation(reservation, ac.signal);
         // returns user to dashboard
         history.push(`/dashboard?date=${d}`);
-        // clears form 
-        // setreservation(initialFormState); 
-        return () => ac.abort();
+        }
     }
-
-    }
+    return () => ac.abort();
 }
 
   const handleCancel = (event) => {
