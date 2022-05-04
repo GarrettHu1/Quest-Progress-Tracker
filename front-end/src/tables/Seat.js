@@ -13,14 +13,11 @@ export default function Seat() {
     const [ reservations, setReservations ] = useState([]);
     const [ resError, setResError ] = useState(null);
     const [ resToBeSeated, setResToBeSeated ] = useState([]);
-
     const [ tables, setTables ] = useState([]);
     const [ tablesError, setTablesError ] = useState(null);
-
     const [ seatErrors, setSeatErrors ] = useState([]);
     const history = useHistory();
 
-    // load all reservations on initial page load, then whenever currentDay is updated
     useEffect(loadDash, []);
 
     function loadDash() {
@@ -45,21 +42,13 @@ export default function Seat() {
   if (tablesError) console.log(tablesError);
   if (resError) console.log(resError);
 
-  // when reservations is updated, sets resToBeSeated to the reservation with matching reservation_id from params
   useEffect(()=> {
     const found = reservations.find((reservation) => Number(reservation.reservation_id) === Number(reservation_id));
-    // console.log("found:", found);
     setResToBeSeated(found);
   }, [reservations]);
 
 async function handleSeat(table) {
-    // take resId from params,
-    // make put req to "tables" table, at url/${id}/seat with reservation_id: resId
-    // console.log("Table Id:", table.table_id, "Reservation Id:", reservation_id)
-    // console.log(table)
-
     setSeatErrors([]);
-
     const values = {
       "reservation_id": reservation_id, 
       "table_id": table.table_id,
@@ -68,7 +57,6 @@ async function handleSeat(table) {
 
     const { people } = resToBeSeated;
     const handleSubErrors = [];
-
     const capacityError = `Table does not have enough capacity. Seating for ${people} is needed.`;
     const occupiedError = `Table id is occupied: ${table.table_id}`;
 
@@ -88,22 +76,12 @@ async function handleSeat(table) {
     const ac = new AbortController();
     console.log(reservation_id)
     const data = {reservation_id: reservation_id, status: "seated"}
-    // updateReservationStatus(data, ac.signal);
     updateTable(values, ac.signal);
     history.push("/dashboard");
     window.location.reload();
   };
 
 }
-
-const handleCancel = (event) => {
-    event.preventDefault();
-    // setFormData(initialFormState);
-    history.goBack();
-  };
-
-  // filters tables that have a reservation seated
-  // const filteredTables = tables.filter((table) => table.reservation_id == null);
 
     return (
         <div>

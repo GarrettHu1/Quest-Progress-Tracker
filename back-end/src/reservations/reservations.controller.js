@@ -167,15 +167,12 @@ const hasReqProps = hasProperties(
 "people");
 
 async function create(req, res, next) {
-  // console.log(req.body.data, "Req data -----------")
   const newReservation = {
     ...req.body.data,
     status: "booked"
   };
 
-  // console.log("New Reservation data:", newReservation)
   if (req.body.data.status === "seated" || req.body.data.status === "finished") {
-    // console.log("--------------Inside status check--------------")
     return next({ status: 400, message: `Reservation status: ${req.body.data.status} is invalid` })
   };
 
@@ -198,40 +195,26 @@ async function reservationExists(req, res, next) {
 }
 
 async function read(req, res, next) {
-  // const { reservationId } = req.params;
-  // // console.log("Res Id:", reservationId);
-
-  // const data = await service.read(reservationId);
-
   const data = res.locals.reservation;
 
   res.status(200).json({ data: data })
 };
 
 async function update(req, res) {
-  // console.log("````````````reservation before updated info:", res.locals.reservation)
-  // console.log(req.body.data);
   const updatedReservation = {
     ...req.body.data,
-    // ...res.locals.reservation,
     reservation_id: res.locals.reservation.reservation_id,
   };
 
-  // console.log("```````````Res with updates:", updatedReservation);
   const data = await service.update(updatedReservation);
-  // console.log("``````````Data:", data)
 
-  
-  // console.log("New data:", data)
   res.json({ data: data });
 };
 
 // function to update a reservations status from "booked" to "seated"
 async function updateStatus(req, res, next) {
-  // console.log(req.body.data, "-------------")
+
   const resToUpdate = res.locals.reservation;
-  // console.log("reservation to edit:", resWithUpdatedStatus)
-  // console.log("req.body:", req.body.data.status);
 
   if (resToUpdate.status === "finished") {
     return next({ status: 400, message: `A finished reservation cannot be updated` });
@@ -243,27 +226,9 @@ async function updateStatus(req, res, next) {
   };
   
   resToUpdate.status = req.body.data.status;
-  // console.log(resToUpdate, "res to update -------------");
-
-  // console.log("newResWithUpdatedStatus", resWithUpdatedStatus)
-
   const data = await service.updateStatus(resToUpdate);
-  // console.log("updateStatus, updated seated reservation", data)
   res.status(200).json({ data: data });
 };
-
-// async function editReservation(req, res, next) {
-//   const currentReservation = res.locals.reservation;
-//   const newRes = {
-//     ...req.body.data,
-//     reservation_id: currentReservation.reservation_id
-//   };
-
-//   console.log("New reservation data:", newRes)
-//   const data = await service.editReservation(newRes);
-
-//   res.status(201).json({ data: data.status })
-// };
 
 async function searchNum(req, res, next) {
   const searchParam = req.query;
@@ -281,7 +246,6 @@ module.exports = {
   read: [ asyncErrorBoundary(reservationExists), asyncErrorBoundary(read) ],
   update: [ asyncErrorBoundary(reservationExists), asyncErrorBoundary(hasReqProps), asyncErrorBoundary(hasOnlyValidProperties), asyncErrorBoundary(update) ],
   updateStatus: [ asyncErrorBoundary(reservationExists), asyncErrorBoundary(updateStatus) ],
-  // editReservation: [ asyncErrorBoundary(reservationExists), asyncErrorBoundary(editReservation) ],
   reservationExists,
   searchNum: [ asyncErrorBoundary(listAll), asyncErrorBoundary(searchNum) ]
 };
