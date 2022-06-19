@@ -1,5 +1,7 @@
-# Capstone: Restaurant Reservation System Frontend
+# Starting
 
-This starter code for the backend of the capstone project in the Thinkful curriculum.
+Requires legacy Node version, run:
 
-See [../README.md](../README.md) for detailed instructions.
+export NODE_OPTIONS=--openssl-legacy-provider
+set NODE_OPTIONS=--openssl-legacy-provider
+

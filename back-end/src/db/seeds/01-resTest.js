@@ -1,4 +1,3 @@
-
 const reservations = require("../fixtures/reservations");
 
 exports.seed = function (knex) {
