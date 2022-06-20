@@ -12,6 +12,7 @@ import Search from "../search/Search";
 import Editreservation from "../reservations/EditReservation";
 import Quests from "../quests/Quests";
 import NewQuest from "../quests/NewQuest";
+import EditQuest from "../quests/EditQuest";
 
 /**
  * Defines all the routes for the application.
@@ -53,7 +54,10 @@ function Routes() {
       </Route> 
       <Route exact={true} path={`/quests/new`}>
         <NewQuest />
-      </Route>        
+      </Route>
+      <Route path={"/quests/:quest_id/edit"}>
+        <EditQuest />
+      </Route>               
       <Route>
         <NotFound />
       </Route>

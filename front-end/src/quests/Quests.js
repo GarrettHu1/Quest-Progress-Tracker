@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { listAllQuests, updateQuest, deleteQuest } from "../utils/api";
+import { listAllQuests, deleteQuest } from "../utils/api";
 // import 'bootstrap/dist/css/bootstrap.css';
 
 export default function Quests() {
@@ -20,7 +20,7 @@ export default function Quests() {
       listAllQuests(abortController.signal)
         .then(setQuestsInfo)
         .catch(setQuestsErrors);
-
+      console.log(questsErrors);
       return () => abortController.abort();
     };
     console.log(questsInfo)
@@ -29,9 +29,9 @@ export default function Quests() {
 
     // };
 
-    async function onDelete(questId) {
+    function onDelete(questId) {
         if (window.confirm("Do you want to delete this item? This cannot be undone.")) {
-            await deleteQuest(questId);
+            deleteQuest(questId);
             history.push(`/quests`);
 
             // window reload temporary
@@ -73,8 +73,8 @@ export default function Quests() {
     </tr>
   </thead>
   <tbody>
-    {questsInfo.map((quest) => (
-    <tr>
+    {questsInfo.map((quest, index) => (
+    <tr key={index}>
       <th scope="row">{quest.game}</th>
       <th scope="row">{quest.quest_name}</th>
       <td>{quest.quest_step}</td>

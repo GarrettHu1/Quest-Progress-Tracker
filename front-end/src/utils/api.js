@@ -310,17 +310,40 @@ export async function createQuest(formData, signal) {
   return await fetchJson(url, options)
 };
 
-// function to modify a quest
-export async function updateQuest(quest, signal) {
-  const url = `${API_BASE_URL}/quests/${quest.quest_id}`;
+// function to find a quest using its id
+export async function readQuest(quest_id, signal) {
+  const url = `${API_BASE_URL}/quests/${quest_id}`
+  const options = {
+    method: "GET",
+    headers,
+    signal
+  };
 
+  // if method not specified, defaults to get
+  return await fetchJson(url, options);
+
+  // try {
+  //   const response = await fetch(url, options);
+  //   const {data} = await response.json();
+  //   return data;
+  // } catch (err) {
+  //   throw err
+  // };
+
+};
+
+// function to modify a quest
+export async function updateQuest(data, signal) {
+  const url = `${API_BASE_URL}/quests/${data.quest_id}`;
+  console.log("Updating")
   const options = {
     method: "PUT",
     headers,
-    body: JSON.stringify({ quest }),
+    body: JSON.stringify({ data }),
     signal,
   };
-  const response = await fetchJson(url, options, quest);
+  // const response = await fetchJson(url, options, data);
+  const response = await fetchJson(url, options);
 
   // return Array.isArray(response) ? response[0] : response;
   return response
