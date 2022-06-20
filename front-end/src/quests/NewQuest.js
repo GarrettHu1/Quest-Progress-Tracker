@@ -9,7 +9,7 @@ export default function NewQuest() {
         game: "",
         quest_name: "",
         quest_step: "",
-        reward: "",
+        quest_reward: "",
     };
 
 const [ quest, setQuest ] = useState({ ...initialFormState });
@@ -23,10 +23,12 @@ const handleChange = ({ target }) => {
     })
   };
   
-const handleSubmit = (event) => {
+const handleSubmit = async (event) => {
     event.preventDefault();
     const ac = new AbortController();
     // call createQuest then go to quests page
+    await createQuest(quest, ac.signal);
+    history.go("/")
 };
 
 const handleCancel = (event) => {

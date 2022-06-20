@@ -294,3 +294,16 @@ export async function listAllQuests(signal) {
 
   return await fetchJson(url, options)
 };
+
+export async function createQuest(formData, signal) {
+  const url = new URL(`${API_BASE_URL}/quests/new`);
+
+  const options = {
+    method: "POST",
+    headers,
+    body: JSON.stringify({data: formData}),
+    signal
+  };
+
+  return await fetchJson(url, options)
+};
