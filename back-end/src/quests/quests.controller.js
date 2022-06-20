@@ -23,7 +23,29 @@ async function create(req, res) {
     res.json({ data: data })
 };
 
+async function update(req, res) {
+    const { quest_id } = req.params;
+    // const values = req.body.data
+    const updatedQuest = {
+        ...req.body.data,
+        quest_id: quest_id
+    };
+
+    const data = await service.update(updatedQuest);
+
+    res.status(200).json({ data: data })
+};
+
+async function destroy(req, res) {
+    const { quest_id } = req.params;
+    await service.delete(quest_id);
+
+    res.status(200);
+};
+
 module.exports = {
     list,
-    create: [ asyncErrorBoundary(hasReqProperties), create ]
+    create: [ asyncErrorBoundary(hasReqProperties), create ],
+    update,
+    delete: destroy
 }

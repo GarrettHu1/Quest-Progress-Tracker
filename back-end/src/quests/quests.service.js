@@ -23,12 +23,20 @@ function update(updatedQuest) {
     .select("*")
     .where({ quest_id: updatedQuest.quest_id})
     .update(updatedQuest, "*")
-    .then(([quest]) => quest );
+    // .then(([quest]) => quest );
+    .then((quest) => quest)
+};
+
+function destroy(quest_id) {
+    return knex("quests")
+    .where({ quest_id })
+    .del();
 };
 
 module.exports = {
     list,
     create,
     read,
-    update
+    update,
+    delete: destroy
 }

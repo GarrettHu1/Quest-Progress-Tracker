@@ -18,4 +18,10 @@ router
 .post(controller.create)
 .all(methodNotAllowed);
 
+router
+.route("/:quest_id")
+.put(controller.update)
+.delete(controller.delete)
+.all(methodNotAllowed);
+
 module.exports = router;
