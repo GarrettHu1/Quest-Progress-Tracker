@@ -26,8 +26,9 @@ const handleChange = ({ target }) => {
 const handleSubmit = async (event) => {
     event.preventDefault();
     const ac = new AbortController();
-    // call createQuest then go to quests page
+    // call createQuest using form info
     await createQuest(quest, ac.signal);
+    // returns user to quests page
     history.push("/quests")
 };
 
@@ -39,7 +40,7 @@ const handleCancel = (event) => {
 
     return (
         <div>
-            <h1>New Quest Placeholder</h1>
+            <h1>Quest/Item Info</h1>
           <QuestForm errors={errors} handleChange={handleChange} handleSubmit={handleSubmit} handleCancel={handleCancel} quest={quest} />  
         </div>
     )

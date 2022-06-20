@@ -254,7 +254,7 @@ export async function updateReservation(reservation, signal) {
   const response = await fetchJson(url, options, reservation);
 
   return Array.isArray(response) ? response[0] : response;
-}
+};
 
 export async function editReservation(reservation, signal) {
   const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}`;
@@ -283,6 +283,7 @@ export async function seatReservation(reservation_id, table_id) {
   return await fetchJson(url, options, {});
 };
 
+// function to retrieve all quests
 export async function listAllQuests(signal) {
   const url = new URL(`${API_BASE_URL}/quests`);
 
@@ -295,6 +296,7 @@ export async function listAllQuests(signal) {
   return await fetchJson(url, options)
 };
 
+// function to create a quest
 export async function createQuest(formData, signal) {
   const url = new URL(`${API_BASE_URL}/quests/new`);
 
@@ -306,4 +308,38 @@ export async function createQuest(formData, signal) {
   };
 
   return await fetchJson(url, options)
+};
+
+// function to modify a quest
+export async function updateQuest(quest, signal) {
+  const url = `${API_BASE_URL}/quests/${quest.quest_id}`;
+
+  const options = {
+    method: "PUT",
+    headers,
+    body: JSON.stringify({ data }),
+    signal,
+  };
+  const response = await fetchJson(url, options, quest);
+
+  // return Array.isArray(response) ? response[0] : response;
+  return response
+};
+
+// function to delete quest
+export async function deleteQuest(quest_id, signal) {
+  const url = `${API_BASE_URL}/quests/${quest_id}`;
+  const options = {
+    method: "DELETE",
+    headers,
+    body: JSON.stringify({data: table_id}),
+    signal
+  };
+  try {
+    const response = await fetch(url, options);
+    const {data} = await response.json();
+    return data;
+  } catch (err) {
+    throw err;
+  }
 };

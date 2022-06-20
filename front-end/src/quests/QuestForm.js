@@ -20,7 +20,7 @@ export default function ResForm({ handleChange, handleSubmit, handleCancel, erro
         <input type="text" name="quest_name" onChange={handleChange} defaultValue={quest.quest_name} placeholder={"Quest/Item Name"} />
     </label>
     <label>
-        Required Step:
+        Required Steps:
         <input type="text" name="quest_step" onChange={handleChange} defaultValue={quest.quest_step} placeholder={"Required Steps"} />
     </label>
     <label>
