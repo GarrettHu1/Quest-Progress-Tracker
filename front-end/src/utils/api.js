@@ -317,7 +317,7 @@ export async function updateQuest(quest, signal) {
   const options = {
     method: "PUT",
     headers,
-    body: JSON.stringify({ data }),
+    body: JSON.stringify({ quest }),
     signal,
   };
   const response = await fetchJson(url, options, quest);
@@ -332,7 +332,7 @@ export async function deleteQuest(quest_id, signal) {
   const options = {
     method: "DELETE",
     headers,
-    body: JSON.stringify({data: table_id}),
+    body: JSON.stringify({data: quest_id}),
     signal
   };
   try {

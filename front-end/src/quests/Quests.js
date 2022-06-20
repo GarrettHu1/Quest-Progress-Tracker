@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { listAllQuests } from "../utils/api";
+import { useHistory } from "react-router-dom";
+import { listAllQuests, updateQuest, deleteQuest } from "../utils/api";
 // import 'bootstrap/dist/css/bootstrap.css';
 
 export default function Quests() {
@@ -9,6 +10,7 @@ export default function Quests() {
 
     const [ questsInfo, setQuestsInfo ] = useState([]);
     const [ questsErrors, setQuestsErrors ] = useState(null);
+    const history = useHistory();
 
     useEffect(loadPage, []);
 
@@ -22,6 +24,20 @@ export default function Quests() {
       return () => abortController.abort();
     };
     console.log(questsInfo)
+
+    // async function onEdit() {
+
+    // };
+
+    async function onDelete(questId) {
+        if (window.confirm("Do you want to delete this item? This cannot be undone.")) {
+            await deleteQuest(questId);
+            history.push(`/quests`);
+
+            // window reload temporary
+            window.location.reload();
+        };
+    };
 
     return (
         <div>
@@ -53,6 +69,7 @@ export default function Quests() {
       <th scope="col">Quest/Item Name</th>
       <th scope="col">Required Step</th>
       <th scope="col">Reward</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -62,6 +79,18 @@ export default function Quests() {
       <th scope="row">{quest.quest_name}</th>
       <td>{quest.quest_step}</td>
       <td>{quest.quest_reward}</td>
+      <td>
+        {<button className="btn btn-primary" 
+              onClick={() => history.push(`/quests/${quest.quest_id}/edit`)}>
+                Edit
+        </button>}   
+      </td>
+      <td>
+        {<button className="btn btn-danger" 
+              onClick={() => onDelete(quest.quest_id)}>
+                Delete
+        </button>}   
+      </td>
     </tr>            
         ))}
 
