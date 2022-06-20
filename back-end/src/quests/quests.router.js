@@ -1,3 +1,9 @@
+/**
+ * Defines the router for quests resources.
+ *
+ * @type {Router}
+ */
+
 const router = require("express").Router();
 const controller = require("./quests.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");

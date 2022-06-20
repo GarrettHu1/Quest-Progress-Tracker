@@ -3,7 +3,8 @@ const asyncErrorBoundary = require("../errors/asyncErrorBoundary");
 const hasProperties = require("../errors/hasProperties");
 
 async function list(req, res) {
-    const data = service.list();
+    const data = await service.list();
+    console.log("========list all quests result:", data)
     res.json({ data: data })
 };
 
@@ -18,7 +19,7 @@ async function create(req, res) {
         ...req.body.data
     };
 
-    const data = service.create(newQuest);
+    const data = await service.create(newQuest);
     res.json({ data: data })
 };
 
