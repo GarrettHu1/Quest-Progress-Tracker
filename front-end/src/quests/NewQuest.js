@@ -28,7 +28,7 @@ const handleSubmit = async (event) => {
     const ac = new AbortController();
     // call createQuest then go to quests page
     await createQuest(quest, ac.signal);
-    history.go("/")
+    history.push("/quests")
 };
 
 const handleCancel = (event) => {
