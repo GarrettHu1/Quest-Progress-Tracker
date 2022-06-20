@@ -13,7 +13,7 @@ export default function ResForm({ handleChange, handleSubmit, handleCancel, erro
         <form>
     <label>
         Game:
-        <input type="text" name="game" onChange={handleChange} defaultValue={quest.game} placeholder={"Game"} />
+        <input type="text" name="game" onChange={handleChange} defaultValue={quest.game} placeholder={"Game Name"} />
     </label>
     <label>
         Quest/Item Name:
@@ -25,7 +25,7 @@ export default function ResForm({ handleChange, handleSubmit, handleCancel, erro
     </label>
     <label>
         Reward:
-        <input type="text" name="reward" onChange={handleChange} defaultValue={quest.quest_reward} placeholder={"Required Steps"} />
+        <input type="text" name="reward" onChange={handleChange} defaultValue={quest.quest_reward} placeholder={"Reward"} />
     </label>
     <button type="submit" onClick={handleSubmit} className="btn btn-primary">Submit</button>
     <button onClick={handleCancel} className="btn btn-danger">Cancel</button>
