@@ -10,7 +10,8 @@ import NewTable from "../tables/Newtable";
 import ReservationSeat from "../tables/ReservationSeat"
 import Search from "../search/Search";
 import Editreservation from "../reservations/EditReservation";
-import Quests from "../quests/Quests"
+import Quests from "../quests/Quests";
+import NewQuest from "../quests/NewQuest";
 
 /**
  * Defines all the routes for the application.
@@ -24,7 +25,7 @@ function Routes() {
   return (
     <Switch>
       <Route exact={true} path="/">
-        <Redirect to={"/dashboard"} />
+        <Redirect to={"/quests"} />
       </Route>
       <Route exact={true} path="/reservations">
         <Redirect to={"/dashboard"} />
@@ -47,8 +48,11 @@ function Routes() {
       <Route path={`/reservations/:reservation_id/edit`}>
         <Editreservation />
       </Route>
-      <Route path={`/quests`}>
+      <Route exact={true} path={`/quests`}>
         <Quests />
+      </Route> 
+      <Route exact={true} path={`/quests/new`}>
+        <NewQuest />
       </Route>        
       <Route>
         <NotFound />

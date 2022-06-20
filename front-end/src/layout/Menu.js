@@ -22,7 +22,8 @@ function Menu() {
         </Link>
         <hr className="sidebar-divider my-0" />
         <ul className="nav navbar-nav text-light" id="accordionSidebar">
-          <li className="nav-item">
+
+          {/* <li className="nav-item">
             <Link className="nav-link" to="/dashboard">
               <span className="oi oi-dashboard" />
               &nbsp;Dashboard
@@ -45,11 +46,18 @@ function Menu() {
               <span className="oi oi-layers" />
               &nbsp;New Table
             </Link>
-          </li>
+          </li> */}
+
           <li className="nav-item">
             <Link className="nav-link" to="/quests">
               <span className="oi oi-layers" />
               &nbsp;Quests
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/quests/new">
+              <span className="oi oi-plus" />
+              &nbsp;New Quest
             </Link>
           </li>
         </ul>

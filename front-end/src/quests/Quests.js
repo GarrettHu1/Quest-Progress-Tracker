@@ -49,7 +49,8 @@ export default function Quests() {
     <table class="table">
     <thead>
     <tr>
-      <th scope="col">Quest Name/Item</th>
+      <th scope="col">Game</th>
+      <th scope="col">Quest/Item Name</th>
       <th scope="col">Required Step</th>
       <th scope="col">Reward</th>
     </tr>
@@ -57,6 +58,7 @@ export default function Quests() {
   <tbody>
     {questsInfo.map((quest) => (
     <tr>
+      <th scope="row">{quest.game}</th>
       <th scope="row">{quest.quest_name}</th>
       <td>{quest.quest_step}</td>
       <td>{quest.quest_reward}</td>
