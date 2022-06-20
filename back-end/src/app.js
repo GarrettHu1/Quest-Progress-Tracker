@@ -9,12 +9,14 @@ const errorHandler = require("./errors/errorHandler");
 const notFound = require("./errors/notFound");
 const reservationsRouter = require("./reservations/reservations.router");
 const tablesRouter = require("./tables/tables.router");
+const questsRouter = require("./quests/quests.router");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+app.use("/quests", questsRouter);
 app.use("/reservations", reservationsRouter);
 app.use("/tables", tablesRouter);
 
