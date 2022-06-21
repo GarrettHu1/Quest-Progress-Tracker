@@ -20,10 +20,11 @@ export default function Quests() {
       listAllQuests(abortController.signal)
         .then(setQuestsInfo)
         .catch(setQuestsErrors);
-      console.log(questsErrors);
       return () => abortController.abort();
     };
     // console.log(questsInfo)
+
+    if (questsErrors) console.log(questsErrors);
 
     // async function onEdit() {
 

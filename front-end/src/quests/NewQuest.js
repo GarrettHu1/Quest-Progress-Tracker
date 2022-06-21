@@ -15,6 +15,7 @@ export default function NewQuest() {
 const [ quest, setQuest ] = useState({ ...initialFormState });
 const [ errors, setErrors ] = useState([]);
 const history = useHistory();
+const handleSubErrors = [];
 
 const handleChange = ({ target }) => {
         setQuest({
@@ -26,10 +27,20 @@ const handleChange = ({ target }) => {
 const handleSubmit = async (event) => {
     event.preventDefault();
     const ac = new AbortController();
+    setErrors(null);
+
+  if (!quest.game || !quest.quest_name || !quest.quest_step|| !quest.quest_reward) {
+    handleSubErrors.push(...errors, "Please Fix Input")
+  }
+  setErrors(handleSubErrors);
+
+    if (handleSubErrors.length === 0) {
     // call createQuest using form info
     await createQuest(quest, ac.signal);
     // returns user to quests page
-    history.push("/quests")
+    history.push("/quests")      
+    }
+
 };
 
 const handleCancel = (event) => {
