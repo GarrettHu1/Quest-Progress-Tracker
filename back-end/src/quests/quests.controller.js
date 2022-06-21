@@ -14,6 +14,16 @@ const hasReqProperties = hasProperties(
     "quest_reward"
 );
 
+function hasOnlyValidProperties(req, res, next) {
+    const { data = {} } = req.body;
+    const questGame = data.game;
+    const questName = data.quest_name;    
+    const questStep = data.quest_step;
+    const questReward = data.quest_reward;
+
+    
+};
+
 async function create(req, res) {
     const newQuest = {
         ...req.body.data
