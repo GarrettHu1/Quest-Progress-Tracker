@@ -11,7 +11,7 @@ export default function EditQuest() {
 
     const [ quest, setQuest ] = useState(null);
     const [ errors, setErrors ] = useState([]);
-    const [ formData, setFormData ] = useState(null);
+    // const [ formData, setFormData ] = useState(null);
     const questId = useParams().quest_id;
     const history = useHistory();
     
@@ -25,7 +25,7 @@ export default function EditQuest() {
         readQuest(questId, abortController.signal)
         .then((quest) => {
             setQuest(quest);
-            setFormData(quest)
+            // setFormData(quest)
             // console.log(quest)
           })
         .catch(setErrors);

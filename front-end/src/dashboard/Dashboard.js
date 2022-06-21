@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { listReservations, listTables, updateReservationStatus, finishTable } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { previous, today, next } from "../utils/date-time"
@@ -16,7 +16,6 @@ function Dashboard({ date }) {
   const [ reservationsError, setReservationsError ] = useState(null);
   const [ tables, setTables ] = useState([]);
   const [ tablesError, setTablesError ] = useState(null);
-  const location = useLocation();
   const history = useHistory();
 
   // load all reservations on initial page load, then whenever currentDay is updated

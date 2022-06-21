@@ -23,7 +23,7 @@ export default function Quests() {
       console.log(questsErrors);
       return () => abortController.abort();
     };
-    console.log(questsInfo)
+    // console.log(questsInfo)
 
     // async function onEdit() {
 
@@ -39,28 +39,25 @@ export default function Quests() {
         };
     };
 
+    questsInfo.sort(function(a, b) {
+      const nameA = a.game.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.game.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+    
+      // names must be equal
+      return 0;
+    });
+
+    console.log(questsInfo);
+
     return (
         <div>
             <h1>Quests</h1>
-
-            {/* <table>
-        <thead>
-          <tr>
-            <th>Quest Name</th>
-            <th>Quest Step</th>
-            <th>Reward</th>
-          </tr>
-        </thead>
-        <tbody>
-          {questsInfo.map((quest) => (
-            <tr key={quest.quest_id}>
-            <td>{quest.quest_name}</td>
-            <td>{quest.quest_step}</td>
-            <td>{quest.quest_reward}</td>      
-            </tr>
-          ))}
-        </tbody>
-        </table> */}
 
     <table class="table">
     <thead>
@@ -69,7 +66,8 @@ export default function Quests() {
       <th scope="col">Quest/Item Name</th>
       <th scope="col">Required Step</th>
       <th scope="col">Reward</th>
-      <th scope="col"></th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
     </tr>
   </thead>
   <tbody>
