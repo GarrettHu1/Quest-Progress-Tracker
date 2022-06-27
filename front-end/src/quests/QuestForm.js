@@ -4,7 +4,7 @@ export default function ResForm({ handleChange, handleSubmit, handleCancel, erro
 
   return (
     <main>
-        {errors.length > 0 &&
+        {errors && errors.length > 0 &&
         <div className="alert alert-danger" role="alert" >
             Please fix the following errors:
             {errors.map((error)=> <li>{error}</li>)}

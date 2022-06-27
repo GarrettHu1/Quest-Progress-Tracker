@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { listAllQuests, deleteQuest } from "../utils/api";
+import Dropdown from "react-bootstrap/Dropdown"
+import QuestsList from "./QuestsList";
 // import 'bootstrap/dist/css/bootstrap.css';
 
 export default function Quests() {
@@ -10,9 +12,13 @@ export default function Quests() {
 
     const [ questsInfo, setQuestsInfo ] = useState([]);
     const [ questsErrors, setQuestsErrors ] = useState(null);
+    const [ filterQuery , setFilterQuery ] = useState(null);
+    const [ filterStatus , setFilterStatus ] = useState("default");
+    const [ filteredQuests , setFilteredQuests ] = useState([]);
     const history = useHistory();
 
     useEffect(loadPage, []);
+    useEffect(filterQuests, [filterQuery]);
 
     function loadPage() {
       const abortController = new AbortController();
@@ -26,9 +32,18 @@ export default function Quests() {
 
     if (questsErrors) console.log(questsErrors);
 
-    // async function onEdit() {
-
-    // };
+    function filterQuests() {
+      const abortController = new AbortController();
+      if (filterQuery != null) {
+      const filtered = questsInfo.filter((quest) => quest.game === filterQuery);
+        setFilteredQuests(filtered);
+        setFilterStatus("notDefault");
+      }
+      else {
+        setFilterStatus("default");
+      }
+      console.log(questsInfo)
+    };
 
     function onDelete(questId) {
         if (window.confirm("Do you want to delete this item? This cannot be undone.")) {
@@ -54,12 +69,26 @@ export default function Quests() {
       return 0;
     });
 
-    console.log(questsInfo);
+    console.log(filterStatus);
+    // console.log(filterQ);
 
     return (
         <div>
             <h1>Quests</h1>
-
+            <div>
+                <Dropdown>
+                  <Dropdown.Toggle variant="success" id="dropdown-basic">
+                    Filter Games
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => setFilterQuery(null)} >All</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setFilterQuery("Destiny 2")} >Destiny 2</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setFilterQuery("MH Rise")} >MH Rise</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setFilterQuery("Vermintide 2")} >Vermintide 2</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setFilterQuery("Test")} >Test</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+            </div>
     <table class="table">
     <thead>
     <tr>
@@ -72,7 +101,8 @@ export default function Quests() {
     </tr>
   </thead>
   <tbody>
-    {questsInfo.map((quest, index) => (
+
+    {/* {questsInfo.map((quest, index) => (
     <tr key={index}>
       <th scope="row">{quest.game}</th>
       <th scope="row">{quest.quest_name}</th>
@@ -91,10 +121,11 @@ export default function Quests() {
         </button>}   
       </td>
     </tr>            
-        ))}
+        ))} */}
 
+    <QuestsList onDelete={onDelete} questsInfo={questsInfo} filteredQuests={filteredQuests} filterStatus={filterStatus} />
   </tbody>
-</table>
+    </table>
         </div>
     )
 }
